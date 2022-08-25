@@ -1,0 +1,22 @@
+name: build
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Download Nuget.exe
+      uses: NuGet/setup-nuget@v1.0.5
+      with:
+        nuget-version: 5.4.0
+
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Restore
+      run: nuget restore .\PushSharp.sln
+
+    - name: Build
+      run: msbuild .\PushSharp.sln
