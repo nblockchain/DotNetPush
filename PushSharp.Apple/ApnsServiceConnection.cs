@@ -37,17 +37,9 @@ namespace PushSharp.Apple
         
         public async Task Send (ApnsNotification notification)
         {
-            var completableNotification = new ApnsConnection.CompletableApnsNotification (notification);
-
-            connection.Send (completableNotification);
-
-            var ex = await completableNotification.WaitForComplete ().ConfigureAwait (false);
+            await connection.SendAsync (notification).ConfigureAwait(false);
 
             //Log.Info ("Finished Waiting for Notification: {0} (Had Exception? {1})", notification.Identifier, ex != null);
-
-            if (ex != null) {
-                throw ex;
-            }
         }
     }
 }

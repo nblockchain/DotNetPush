@@ -30,7 +30,7 @@ namespace PushSharp.Tests
                 attempted++;
                 broker.QueueNotification (new ApnsNotification {
                     DeviceToken = dt,
-                    Payload = JObject.Parse ("{ \"aps\" : { \"alert\" : \"Hello PushSharp!\" } }")
+                    Body = "Hello PushSharp!"
                 });
             }
 
@@ -38,22 +38,6 @@ namespace PushSharp.Tests
 
             Assert.AreEqual (attempted, succeeded);
             Assert.AreEqual (0, failed);
-        }
-
-        [Test]
-        public void APNS_Feedback_Service ()
-        {
-            var config = new ApnsConfiguration (
-                ApnsConfiguration.ApnsServerEnvironment.Sandbox, 
-                Settings.Instance.ApnsCertificateFile, 
-                Settings.Instance.ApnsCertificatePassword);
-            
-            var fbs = new FeedbackService (config);
-            fbs.FeedbackReceived += (string deviceToken, DateTime timestamp) => {
-                // Remove the deviceToken from your database
-                // timestamp is the time the token was reported as expired
-            };
-            fbs.Check ();
         }
     }
 }
